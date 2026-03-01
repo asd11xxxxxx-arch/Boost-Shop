@@ -1,6 +1,10 @@
 import telebot
 from telebot import types
 import random
+# === Render အတွက် လိုအပ်သော Library များ ထပ်ထည့်ခြင်း ===
+from flask import Flask
+from threading import Thread
+import os
 
 # ================= CONFIG =================
 TOKEN = "8547877777:AAGmQN8gGru3LauuoYS-ULPaSut1W175DdU"
@@ -8,6 +12,20 @@ CHANNEL_ID = -1003793281342
 ADMIN_ID = 8528450237
 
 bot = telebot.TeleBot(TOKEN)
+
+# === Render Web Service အတွက် Server ဆောက်ခြင်း ===
+app = Flask('')
+
+@app.route('/')
+def home():
+    return "Bot is running!"
+
+def run():
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
+
+def keep_alive():
+    t = Thread(target=run)
+    t.start()
 
 # ================= MEMORY =================
 users = set()
@@ -214,6 +232,8 @@ def callback_handler(call):
         bot.edit_message_caption(f"{call.message.caption}\n\n\U0000274C <b>CANCELED</b>", call.message.chat.id, call.message.message_id, parse_mode="HTML")
         bot.send_message(user_id, f"\U0000274C သင်၏ Order #{order_id} ကို ပယ်ဖျက်လိုက်ပါသည်။")
 
-print("Bot Is Online...")
-bot.infinity_polling()
-
+# === Bot စတင်ခြင်း ===
+if __name__ == "__main__":
+    keep_alive() # Web Server ကို အနောက်မှာ ပေး Run ထားခြင်း
+    print("Bot Is Online...")
+    bot.infinity_polling()
