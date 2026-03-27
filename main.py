@@ -9,7 +9,7 @@ import os
 # ================= CONFIG =================
 TOKEN = "8547877777:AAGmQN8gGru3LauuoYS-ULPaSut1W175DdU"
 CHANNEL_ID = -1003793281342
-ADMIN_ID = 8528450237
+ADMIN_ID = 8510560531
 
 bot = telebot.TeleBot(TOKEN)
 
